@@ -33,6 +33,8 @@ export const authError = error => ({
     error
 });
 
+// if credentials are correct, decode returned JSON containing our JWT.
+// Use to auth for subsequent API req and pass JWT to storeAuthInfo fnc
 // Stores the auth token in state and localStorage, and decodes and stores
 // the user data stored in the token
 const storeAuthInfo = (authToken, dispatch) => {
@@ -42,8 +44,13 @@ const storeAuthInfo = (authToken, dispatch) => {
     saveAuthToken(authToken);
 };
 
+// first we dispatch authRequest action
+// part of group 3 sync actions for auth (Request, Success, Error) patterns
+// handled in reducer in reducers/auth.js
 export const login = (username, password) => dispatch => {
     dispatch(authRequest());
+    // we make a POST req to /auth/login, passing UN and PW as JSON encoded req body
+    // read by server and checked against credentials stored in db
     return (
         fetch(`${API_BASE_URL}/auth/login`, {
             method: 'POST',
@@ -54,9 +61,12 @@ export const login = (username, password) => dispatch => {
                 username,
                 password
             })
-        })
+        })  
+            // here we handle response from server
             // Reject any requests which don't return a 200 status, creating
             // errors which follow a consistent format
+            // if creds are wrong and server err, we normalize error msg using
+            // normalizeResponseErrors func and return SubmissionError for redux form
             .then(res => normalizeResponseErrors(res))
             .then(res => res.json())
             .then(({authToken}) => storeAuthInfo(authToken, dispatch))

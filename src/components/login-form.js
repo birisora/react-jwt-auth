@@ -8,7 +8,9 @@ export class LoginForm extends React.Component {
     onSubmit(values) {
         return this.props.dispatch(login(values.username, values.password));
     }
-
+    // render 2 field components for UN and PW
+    // when form submitshandleSubmit gets called and dispatches login action
+    // contained in auth.js
     render() {
         let error;
         if (this.props.error) {

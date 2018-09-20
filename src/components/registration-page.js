@@ -1,3 +1,4 @@
+// when user registers successfully, they are redirected to dashboard
 import React from 'react';
 import {connect} from 'react-redux';
 import {Link, Redirect} from 'react-router-dom';
@@ -7,6 +8,8 @@ import RegistrationForm from './registration-form';
 export function RegistrationPage(props) {
     // If we are logged in (which happens automatically when registration
     // is successful) redirect to the user's dashboard
+    // redirection will also take place if a logged in user directly try
+    // to access page by navigating to /register page
     if (props.loggedIn) {
         return <Redirect to="/dashboard" />;
     }
@@ -19,6 +22,7 @@ export function RegistrationPage(props) {
     );
 }
 
+// loggedIn prop is true when user successfully logged in
 const mapStateToProps = state => ({
     loggedIn: state.auth.currentUser !== null
 });

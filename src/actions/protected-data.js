@@ -13,6 +13,11 @@ export const fetchProtectedDataError = error => ({
     error
 });
 
+// we fetch JWT from state and make AJAX request /protected
+// pass in bearer token in AUthorization header
+// if works, dispatch fetchProtectedDataSuccess action and if fails DataError
+// the reducer protected-data.js handles these settings accordingly
+// data fetched from the endpoint is then displayed in Dashboard component
 export const fetchProtectedData = () => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
     return fetch(`${API_BASE_URL}/protected`, {

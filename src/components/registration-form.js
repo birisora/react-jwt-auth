@@ -1,12 +1,19 @@
+// Typical redux form setup
+
 import React from 'react';
 import {Field, reduxForm, focus} from 'redux-form';
 import {registerUser} from '../actions/users';
 import {login} from '../actions/auth';
 import Input from './input';
+// here we import our validators functions
 import {required, nonEmpty, matches, length, isTrimmed} from '../validators';
+// here we use validator creator to make a specific validator passing in min, max
 const passwordLength = length({min: 10, max: 72});
+// checks for the type="password" and confirms if matches
 const matchesPassword = matches('password');
 
+// when form submits we dispatch registerUser async action, followed by login
+// register creates a new user, if works then login will auto log user in
 export class RegistrationForm extends React.Component {
     onSubmit(values) {
         const {username, password, firstName, lastName} = values;
@@ -16,6 +23,9 @@ export class RegistrationForm extends React.Component {
             .then(() => this.props.dispatch(login(username, password)));
     }
 
+    // render method renders form contain various fields
+    // when submitted, calls Redux form submit handling method
+    // which calls our onSubmit method above
     render() {
         return (
             <form
@@ -28,6 +38,7 @@ export class RegistrationForm extends React.Component {
                 <label htmlFor="lastName">Last name</label>
                 <Field component={Input} type="text" name="lastName" />
                 <label htmlFor="username">Username</label>
+                {/* Here we pass specific validators to Field component */}
                 <Field
                     component={Input}
                     type="text"
@@ -42,6 +53,9 @@ export class RegistrationForm extends React.Component {
                     validate={[required, passwordLength, isTrimmed]}
                 />
                 <label htmlFor="passwordConfirm">Confirm password</label>
+            {/* allValues is obj containing values entered into each form field
+                if two fields don't match, we return error message
+             */}
                 <Field
                     component={Input}
                     type="password"

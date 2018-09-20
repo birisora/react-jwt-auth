@@ -1,8 +1,11 @@
+// when we reach /dashboard, this component is rendered
 import React from 'react';
 import {connect} from 'react-redux';
 import requiresLogin from './requires-login';
 import {fetchProtectedData} from '../actions/protected-data';
 
+// we dispatch fetchProtectedData action from protected-data.js
+// action tries access endpt which contains protected data using our JWT
 export class Dashboard extends React.Component {
     componentDidMount() {
         this.props.dispatch(fetchProtectedData());
@@ -32,4 +35,6 @@ const mapStateToProps = state => {
     };
 };
 
+// how we export dashboard component to see requiresLogin in use
+// Dashboard wrapped by connect and then wrapped by requiresLogin
 export default requiresLogin()(connect(mapStateToProps)(Dashboard));
