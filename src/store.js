@@ -16,10 +16,16 @@ const store = createStore(
 );
 
 // Hydrate the authToken from localStorage if it exist
+// loadAuthToken tries to retrieve token from localStorage using getItem method
+// returns token if exists or null otherwise
+// if exists, dispatch setAuthToken action to store in state
 const authToken = loadAuthToken();
 if (authToken) {
     const token = authToken;
     store.dispatch(setAuthToken(token));
+    // since JWT are time limited, we send a req often from client to obtain
+    // a fresh token. Replaces current token and use for further req to API
+    // action defined in actions/auth.js
     store.dispatch(refreshAuthToken());
 }
 

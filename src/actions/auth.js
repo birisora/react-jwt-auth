@@ -41,6 +41,9 @@ const storeAuthInfo = (authToken, dispatch) => {
     const decodedToken = jwtDecode(authToken);
     dispatch(setAuthToken(authToken));
     dispatch(authSuccess(decodedToken.user));
+    // call saveAuthToken from local-storage.js
+    // attempts to save JWT to your browser's local storage
+    // it is a store in your browser that persists even if close tab etc..
     saveAuthToken(authToken);
 };
 
@@ -88,6 +91,10 @@ export const login = (username, password) => dispatch => {
     );
 };
 
+// we provide current JWT as credentials.
+// if we receive new JWT in res, we store using storeAuthInfo method.
+// if existing JWT expired, remove JWT and associated user info from state 
+// and clear token from localStorage. 
 export const refreshAuthToken = () => (dispatch, getState) => {
     dispatch(authRequest());
     const authToken = getState().auth.authToken;

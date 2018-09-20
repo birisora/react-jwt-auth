@@ -3,6 +3,10 @@ import {connect} from 'react-redux';
 import {clearAuth} from '../actions/auth';
 import {clearAuthToken} from '../local-storage';
 
+// to log out we perform same clearing actions as when user failed to
+// refresh their token.
+// user won't be able to access protected endpoints anymore
+// and redirected to login page
 export class HeaderBar extends React.Component {
     logOut() {
         this.props.dispatch(clearAuth());

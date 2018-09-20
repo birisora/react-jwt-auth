@@ -8,7 +8,9 @@ import Dashboard from './dashboard';
 import RegistrationPage from './registration-page';
 import {refreshAuthToken} from '../actions/auth';
 
+// the action is dispatched here in root app component
 export class App extends React.Component {
+    // fired up each time one of component's prop values changes
     componentDidUpdate(prevProps) {
         if (!prevProps.loggedIn && this.props.loggedIn) {
             // When we are logged in, refresh the auth token periodically
@@ -19,10 +21,13 @@ export class App extends React.Component {
         }
     }
 
+    // call this method to stop refreshing token if app unloaded
     componentWillUnmount() {
         this.stopPeriodicRefresh();
     }
 
+    // uses a setInterval to run a callback once an hour
+    // dispatches a new token with later expiry date
     startPeriodicRefresh() {
         this.refreshInterval = setInterval(
             () => this.props.dispatch(refreshAuthToken()),
@@ -30,6 +35,7 @@ export class App extends React.Component {
         );
     }
 
+    // if props.loggedIn change from true to false, user has logged out
     stopPeriodicRefresh() {
         if (!this.refreshInterval) {
             return;
