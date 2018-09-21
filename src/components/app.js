@@ -21,7 +21,7 @@ export class App extends React.Component {
         }
     }
 
-    // call this method to stop refreshing token if app unloaded
+    // call this method to stop refreshing token if app unloaded 
     componentWillUnmount() {
         this.stopPeriodicRefresh();
     }
